@@ -1,3 +1,6 @@
+layout: page
+title: "MSSQL Injection Cheat Sheet"
+permalink: /mssqli/
 
 # Microsoft MSSQLI
 
