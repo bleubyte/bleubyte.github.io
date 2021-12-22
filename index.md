@@ -2,7 +2,7 @@
 
 Here be cheats 
 
-[MSSQL Injection](http://lul.lol/mssqli/)
+[MSSQL Injection](http://lul.lol/mssqli)
 
 ## Whoami? 
 [My Medium Blog](https://saeeds.medium.com/) <br />
