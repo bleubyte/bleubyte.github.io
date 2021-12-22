@@ -1,10 +1,14 @@
-## Welcome 
+# Pentesters Cheat Sheets
 
 Here be cheats 
 
 [MSSQL Injection](http://lul.lol/mssqli)
 
-## Whoami? 
-[My Medium Blog](https://saeeds.medium.com/) <br />
-[Linkedin](https://www.linkedin.com/in/saeedbalquizi/) <br />
-[Gitrepo](https://github.com/bleubyte) -- Nothing Exciting yet
+
+To view this site via command line 
+```
+sudo apt-get install html2text
+curl http://lul.lol/ | html2text
+```
+
+
