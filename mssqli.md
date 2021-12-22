@@ -1,3 +1,4 @@
+---
 layout: page
 title: "MSSQL Injection Cheat Sheet"
 permalink: /mssqli
@@ -5,7 +6,7 @@ permalink: /mssqli
 
 # Microsoft MSSQLI
 
-### String concatenation: 
+## String concatenation: 
 You can concatenate together multiple strings to make a single string.
 ```bash
 'foo'+'bar'
