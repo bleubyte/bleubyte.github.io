@@ -5,14 +5,17 @@ permalink: /mssqli
 
 # Microsoft MSSQLI
 
-String concatenation: You can concatenate together multiple strings to make a single string.
-`'foo'+'bar'`
+### String concatenation: You can concatenate together multiple strings to make a single string.
+```bash
+'foo'+'bar'
+```
+### Substring: You can extract part of a string, from a specified offset with a specified length. Note that the offset index is 1-based. Each of the following expressions will return the string ba.
 
-Substring: You can extract part of a string, from a specified offset with a specified length. Note that the offset index is 1-based. Each of the following expressions will return the string ba.
+```bash
+SUBSTRING('foobar', 4, 2)`
+```
 
-`SUBSTRING('foobar', 4, 2)`
-
-COMMENTS: You can use comments to truncate a query and remove the portion of the original query that follows your input.
+### COMMENTS: You can use comments to truncate a query and remove the portion of the original query that follows your input.
 ```bash
 --comment
 
@@ -20,15 +23,17 @@ COMMENTS: You can use comments to truncate a query and remove the portion of the
 ```
 
 
-Database version: You can query the database to determine its type and version. This information is useful when formulating more complicated attacks.
+### Database version: You can query the database to determine its type and version. This information is useful when formulating more complicated attacks.
 
-`SELECT @@version`
-
+```bash
+SELECT @@version
+```
 
 
 # ORDER BY 
-`ORDER BY N-- Where N input number 1,2,3,4,5,6,7,8 etc..`
-
+```bash
+ORDER BY N-- Where N input number 1,2,3,4,5,6,7,8 etc..
+```
 # Current User	
 ```bash
 
