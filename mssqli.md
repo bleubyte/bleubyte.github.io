@@ -3,7 +3,7 @@ title: "MSSQL Injection Cheat Sheet"
 permalink: /mssqli
 ---
 
-# Microsoft MSSQLI
+# MSSQLI
 
 ### Current Database
 ```bash
