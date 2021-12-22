@@ -5,11 +5,13 @@ permalink: /mssqli
 
 # Microsoft MSSQLI
 
-### String concatenation: You can concatenate together multiple strings to make a single string.
+### String concatenation: 
+You can concatenate together multiple strings to make a single string.
 ```bash
 'foo'+'bar'
 ```
-### Substring: You can extract part of a string, from a specified offset with a specified length. Note that the offset index is 1-based. Each of the following expressions will return the string ba.
+### Substring: 
+You can extract part of a string, from a specified offset with a specified length. Note that the offset index is 1-based. Each of the following expressions will return the string ba.
 
 ```bash
 SUBSTRING('foobar', 4, 2)`
