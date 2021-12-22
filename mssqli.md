@@ -1,8 +1,8 @@
 layout: page
 title: "MSSQL Injection Cheat Sheet"
-permalink: /mssqli
+permalink: /mssqli/
 
-Microsoft MSSQLI
+# Microsoft MSSQLI
 
 String concatenation: You can concatenate together multiple strings to make a single string.
 `'foo'+'bar'`
